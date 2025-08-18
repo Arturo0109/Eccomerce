@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  EMPLOYEE  
+  CLIENT
+}
+
+enum OrderStatus {
+  PENDING
+  PAID 
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  nombre      String
+  email     String   @unique
+  password  String
+  rol      UserRole @default(CLIENT)
+  createdAt DateTime @default(now())
+  pedidos  Pedido[]
+}
+
+model Categoria {
+  id        Int      @id @default(autoincrement())
+  nombre    String   @unique
+  descripcion String?
+  productos Producto[]
+}
+
+model Producto {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  descripcion String
+  precio Float
+  stock     Int    @default(0)
+  categoria Categoria? @relation(fields: [categoriaId], references: [id])
+  categoriaId Int?
+  creadoEn DateTime @default(now())
+  activo  Boolean  @default(true)
+  items DetallePedido[]
+}
+
+model Pedido {
+  id        Int      @id @default(autoincrement())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  creadoEn DateTime @default(now())
+  estado   OrderStatus @default(PENDING)
+  metodoPago String?
+  direccionEnvio String?
+  factura Factura?
+  detalles DetallePedido[]
+}
+
+model DetallePedido {
+  id        Int      @id @default(autoincrement())
+  pedido    Pedido   @relation(fields: [pedidoId], references: [id])
+  pedidoId  Int
+  producto  Producto @relation(fields: [productoId], references: [id])
+  productoId Int
+  cantidad  Int
+  precioUnit Float
+} 
+
+model Factura {
+  id        Int      @id @default(autoincrement())
+  pedido    Pedido   @relation(fields: [pedidoId], references: [id])
+  pedidoId  Int @unique
+  emitida DateTime @default(now())
+  total     Float
+}
