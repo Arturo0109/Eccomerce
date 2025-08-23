@@ -1,0 +1,1 @@
+esto es de control para la app y para registrar, si tiempo antes de esto no se pudo enviar o hacer mas es porque se necesitaba timepo para demas cosas
