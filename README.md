@@ -12,3 +12,6 @@ La app tendrá autenticación con roles, manejo de pedidos, historial de compras
 El enfoque principal es seguridad, escalabilidad y facilidad de uso.
 
 Esto es un proyecto solo es para mostrar mis habilidades de FullStack
+
+
+Aqui estaran o se intentara dejar documentado el el proceso que lleva el proyecto
